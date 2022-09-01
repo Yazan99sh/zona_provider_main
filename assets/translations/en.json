@@ -1,5 +1,24 @@
 {
   "field_required_message": "This field is required",
   "make_sure_this_number_can_receive_sms_and_calls_you_will_receive_your_activation_code_throughout_it": "Make sure this number can receive SMS and calls, you will receive your activation code throughout it",
-  "verify": "Verify"
+  "verify": "Verify",
+  "error_message": "OOPS! Something went wrong",
+  "retry": "Retry",
+  "no_internet_connection_message": "No internet connection",
+  "access_denied_message": "Access Denied, You have insufficient privileges",
+  "password_length_error_message": "password must be at least 8 digits long",
+  "invalid_email_or_password": "Invalid email or password!",
+  "email_address": "Email Address",
+  "password": "Password",
+  "invalid_email_error_message": "Please enter a valid email",
+  "invalid_phone_error_message": "Please enter a valid phone number",
+  "forgot_your_password": "Forgot your password?",
+  "login": "LOGIN",
+  "start": "Start",
+  "skip": "Skip",
+  "head_text_onboarding1": "Beauty parlour at your home",
+  "head_text_onboarding2": " Plumber & expart nearby you",
+  "head_text_onboarding3": "Professional home cleaning",
+  "head_text_onboarding4": "Head Text Onboarding4",
+  "get_started": "Get Started"
 }

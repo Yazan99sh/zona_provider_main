@@ -24,7 +24,6 @@ dependencies:
   easy_localization: ^3.0.1
   flutter_bloc: ^8.0.1
   flutter_gen: ^4.2.1
-  flutter_svg: ^1.1.0
   get_it: ^7.2.0
   google_fonts: ^3.0.1
   injectable: ^1.5.3
@@ -40,6 +39,8 @@ dependencies:
   shimmer: ^2.0.0
   jwt_decoder: ^2.0.1
   image_picker: ^0.8.5+3
+  dots_indicator: ^2.0.0
+  flutter_svg: ^1.1.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -65,3 +66,4 @@ flutter:
   assets:
     - assets/translations/
     - assets/images/
+    - assets/images/onboarding/

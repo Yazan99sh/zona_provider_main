@@ -14,6 +14,9 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
+
+  $AssetsImagesOnboardingGen get onboarding =>
+      const $AssetsImagesOnboardingGen();
 }
 
 class $AssetsTranslationsGen {
@@ -21,6 +24,22 @@ class $AssetsTranslationsGen {
 
   /// File path: assets/translations/en.json
   String get en => 'assets/translations/en.json';
+}
+
+class $AssetsImagesOnboardingGen {
+  const $AssetsImagesOnboardingGen();
+
+  /// File path: assets/images/onboarding/onboarding_1.png
+  AssetGenImage get onboarding1 =>
+      const AssetGenImage('assets/images/onboarding/onboarding_1.png');
+
+  /// File path: assets/images/onboarding/onboarding_2.png
+  AssetGenImage get onboarding2 =>
+      const AssetGenImage('assets/images/onboarding/onboarding_2.png');
+
+  /// File path: assets/images/onboarding/onboarding_3.png
+  AssetGenImage get onboarding3 =>
+      const AssetGenImage('assets/images/onboarding/onboarding_3.png');
 }
 
 class Assets {
