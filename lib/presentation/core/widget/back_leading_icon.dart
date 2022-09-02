@@ -8,7 +8,7 @@ class BackLeadingIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-      padding: const EdgeInsets.only(right: 4.0, left: 3.0),
+      padding: const EdgeInsets.only(left: 6.0),
       minWidth: 40,
       height: 40,
     //  color: Theme.of(context).cardTheme.color,

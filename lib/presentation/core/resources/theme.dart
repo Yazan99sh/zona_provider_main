@@ -25,6 +25,8 @@ ThemeData getThemeData(BuildContext context) {
       selectionHandleColor: Colors.grey,
     ),
     inputDecorationTheme: InputDecorationTheme(
+      focusColor: const Color(0xffF5F5F5),
+      filled: true,
       labelStyle: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.w500,
@@ -37,14 +39,15 @@ ThemeData getThemeData(BuildContext context) {
           color: Colors.black,
           fontSize: 16,
           fontFamily: GoogleFonts.poppins().fontFamily),
-      focusedBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(
+      focusedBorder:  OutlineInputBorder(borderRadius: BorderRadius.circular(10),
+        borderSide:const BorderSide(
           color: Colors.black,
         ),
       ),
-      enabledBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: Colors.grey,
+      enabledBorder:  OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        borderSide:const BorderSide(
+          color:  Color(0xffF5F5F5),
         ),
       ),
       contentPadding: const EdgeInsets.all(14),
@@ -55,7 +58,7 @@ ThemeData getThemeData(BuildContext context) {
         foregroundColor: MaterialStateProperty.all(Colors.white),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(10),
           ),
         ),
         padding: MaterialStateProperty.all(const EdgeInsets.all(15)),

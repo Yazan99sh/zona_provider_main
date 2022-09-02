@@ -41,6 +41,8 @@ dependencies:
   image_picker: ^0.8.5+3
   dots_indicator: ^2.0.0
   flutter_svg: ^1.1.4
+  form_field_validator: ^1.1.0
+  intl_phone_number_input: ^0.7.0+2
 dev_dependencies:
   flutter_test:
     sdk: flutter

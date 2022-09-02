@@ -20,6 +20,9 @@
       <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_ios-0.8.6" />
       <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.5+2" />
       <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.8.5+3" />
+      <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/libphonenumber-2.0.2" />
+      <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/libphonenumber_web-0.2.0+1" />
+      <root url="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/libphonenumber_plugin-0.2.3" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
