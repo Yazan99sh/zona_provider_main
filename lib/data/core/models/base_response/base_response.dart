@@ -4,14 +4,14 @@ part 'base_response.g.dart';
 
 @JsonSerializable(genericArgumentFactories: true)
 class BaseResponse<T> {
-  @JsonKey(name: 'msg', defaultValue: '')
+  @JsonKey(name: 'message', defaultValue: '')
   final String? message;
   final int? totalRecords;
   final T? data;
-  final String? code;
+  final int? code;
 
   BaseResponse({
-    required this.message,
+    this.message,
     this.totalRecords,
     this.data,
     this.code,

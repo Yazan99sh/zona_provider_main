@@ -1,5 +1,5 @@
 
-import 'package:zona_provider_main/presentation/core/widget/custom_dialog_widget.dart';
+import 'package:zona_provider_main/presentation/core/widgets/custom_dialog_widget.dart';
 import 'package:flutter/material.dart';
 
 class CustomDialog {

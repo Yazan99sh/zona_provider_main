@@ -11,10 +11,10 @@ BaseResponse<T> _$BaseResponseFromJson<T>(
   T Function(Object? json) fromJsonT,
 ) =>
     BaseResponse<T>(
-      message: json['msg'] as String? ?? '',
+      message: json['message'] as String? ?? '',
       totalRecords: json['totalRecords'] as int?,
       data: _$nullableGenericFromJson(json['data'], fromJsonT),
-      code: json['code'] as String?,
+      code: json['code'] as int?,
     );
 
 T? _$nullableGenericFromJson<T>(

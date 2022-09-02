@@ -1,4 +1,8 @@
+import 'package:zona_provider_main/presentation/core/auth/auth_bloc.dart';
+import 'package:zona_provider_main/presentation/core/widgets/error_view.dart';
+import 'package:zona_provider_main/presentation/core/widgets/loader.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -8,11 +12,39 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  late final AuthBloc authBloc;
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    authBloc.add(AuthCheckRequested());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('Hello World'),
+        child: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            if (state is AuthLoading) {
+              return const Scaffold(
+                body: Center(
+                  child: Loader(),
+                ),
+              );
+            } else if (state is AuthFailure) {
+              return Center(
+                child: ErrorView(
+                  failure: state.failure,
+                  onRetry: () {
+                    authBloc.add(AuthCheckRequested());
+                  },
+                ),
+              );
+            }
+            return const SizedBox();
+          },
+        ),
       ),
     );
   }

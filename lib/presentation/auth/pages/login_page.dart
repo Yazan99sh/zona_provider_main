@@ -1,9 +1,18 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:zona_provider_main/domain/auth/entities/user.dart';
+import 'package:zona_provider_main/injection.dart';
+import 'package:zona_provider_main/presentation/auth/blocs/login/login_bloc.dart';
+import 'package:zona_provider_main/presentation/core/blocs/core/base_state.dart';
+import 'package:zona_provider_main/presentation/core/routes/router.dart';
 import 'package:zona_provider_main/presentation/core/utils/generated_assets/assets.gen.dart';
-import 'package:zona_provider_main/presentation/core/widget/password_control.dart';
+import 'package:zona_provider_main/presentation/core/widgets/password_control.dart';
+import 'package:zona_provider_main/presentation/core/widgets/screen_loader.dart';
+import 'package:zona_provider_main/presentation/core/widgets/screen_utils.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
@@ -15,13 +24,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage>
-    {
+    with ScreenLoader<LoginPage>, ScreenUtils {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormFieldState> _emailFormFieldKey =
       GlobalKey<FormFieldState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   late MultiValidator _passwordValidator;
+  final LoginBloc _loginBloc = getIt<LoginBloc>();
 
   @override
   void initState() {
@@ -34,118 +44,131 @@ class _LoginPageState extends State<LoginPage>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget screen(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 60,
-                ),
-                Assets.images.logo.image(
-                  width: 224,
-                  height: 100,
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                AutoSizeText(
-                  'login_page_message'.tr(),
-                  maxFontSize: 16,
-                  minFontSize: 8,
-                  maxLines: 1,
-                  style: const TextStyle(
-                    fontSize: 16,
+        child: BlocListener<LoginBloc, BaseState<User>>(
+          bloc: _loginBloc,
+          listener: (BuildContext context, state) {
+            if (state.isInProgress) {
+              startLoading();
+            } else if (state.isFailure) {
+              stopLoading();
+              showError(failure: state.failure, isFloating: true);
+            } else if (state.isSuccess) {
+              stopLoading();
+            }
+          },
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 60,
                   ),
-                ),
-                const SizedBox(
-                  height: 32,
-                ),
-                TextFormField(
-                  key: _emailFormFieldKey,
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: 'email_address'.tr(),
+                  Assets.images.logo.image(
+                    width: 224,
+                    height: 100,
                   ),
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  onChanged: (text) {
-                    _emailFormFieldKey.currentState!.validate();
-                  },
-                  validator: (text) {
-                    if (text == null || text.isEmpty) {
-                      return 'field_required_message'.tr();
-                    }
-                    if (!EmailValidator(
-                            errorText: 'invalid_email_error_message'.tr())
-                        .isValid(text.toLowerCase().trim())) {
-                      return 'invalid_email_error_message'.tr();
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                PasswordControl(
-                  labelText: 'password'.tr(),
-                  controller: _passwordController,
-                  validator: _passwordValidator,
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Align(
-                  alignment: AlignmentDirectional.centerEnd,
-                  child: InkWell(
-                    onTap: () {
-                      // AutoRouter.of(context)
-                      //     .push(const ForgetPasswordPageRoute());
-                    },
-                    child: Text(
-                      'forget_password'.tr(),
-                      style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          fontSize: 14,
-                          color:
-                              Theme.of(context).textTheme.bodyText1!.color),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  AutoSizeText(
+                    'login_page_message'.tr(),
+                    maxFontSize: 16,
+                    minFontSize: 8,
+                    maxLines: 1,
+                    style: const TextStyle(
+                      fontSize: 16,
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      if (!_formKey.currentState!.validate()) return;
-                      // loginBloc.add(
-                      //   LoginRequested(
-                      //     email: _emailController.text.trim(),
-                      //     password: _passwordController.text,
-                      //   ),
-                      // );
-                    },
-                    child: const Text(
-                      'sign_in',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ).tr(),
+                  const SizedBox(
+                    height: 32,
                   ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                _buildSignUpRow(),
-              ],
+                  TextFormField(
+                    key: _emailFormFieldKey,
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: 'email_address'.tr(),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    onChanged: (text) {
+                      _emailFormFieldKey.currentState!.validate();
+                    },
+                    validator: (text) {
+                      if (text == null || text.isEmpty) {
+                        return 'field_required_message'.tr();
+                      }
+                      if (!EmailValidator(
+                              errorText: 'invalid_email_error_message'.tr())
+                          .isValid(text.toLowerCase().trim())) {
+                        return 'invalid_email_error_message'.tr();
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  PasswordControl(
+                    labelText: 'password'.tr(),
+                    controller: _passwordController,
+                    validator: _passwordValidator,
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: InkWell(
+                      onTap: () {
+                        AutoRouter.of(context)
+                            .push(const ForgetPasswordPageRoute());
+                      },
+                      child: Text(
+                        'forget_password'.tr(),
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontSize: 14,
+                            color:
+                                Theme.of(context).textTheme.bodyText1!.color),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        if (!_formKey.currentState!.validate()) return;
+                        _loginBloc.add(
+                          LoginRequested(
+                            email: _emailController.text.trim(),
+                            password: _passwordController.text,
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'sign_in',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ).tr(),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  _buildSignUpRow(),
+                ],
+              ),
             ),
           ),
         ),
@@ -168,7 +191,7 @@ class _LoginPageState extends State<LoginPage>
         ),
         InkWell(
           onTap: () {
-           // AutoRouter.of(context).push(const SignUpPageRoute());
+            AutoRouter.of(context).push(const SignUpPageRoute());
           },
           child: Text(
             'sign_up'.tr(),

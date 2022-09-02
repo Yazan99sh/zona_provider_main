@@ -4,6 +4,8 @@ enum ServerErrorCode {
   noInternetConnection,
   forbidden,
   notFound,
+  invalidData,
+  wrongInput
 }
 
 

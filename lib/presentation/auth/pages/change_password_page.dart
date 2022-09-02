@@ -1,9 +1,9 @@
-import 'package:zona_provider_main/presentation/core/widget/back_leading_icon.dart';
-import 'package:zona_provider_main/presentation/core/widget/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:zona_provider_main/presentation/core/widget/password_control.dart';
+import 'package:zona_provider_main/presentation/core/widgets/back_leading_icon.dart';
+import 'package:zona_provider_main/presentation/core/widgets/custom_app_bar.dart';
+import 'package:zona_provider_main/presentation/core/widgets/password_control.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({

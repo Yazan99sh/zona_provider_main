@@ -50,6 +50,12 @@ ThemeData getThemeData(BuildContext context) {
           color:  Color(0xffF5F5F5),
         ),
       ),
+      errorBorder:OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+      ) ,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+      ) ,
       contentPadding: const EdgeInsets.all(14),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
