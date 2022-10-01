@@ -73,7 +73,7 @@ class _CustomDialogWidgetState extends State<CustomDialogWidget> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
-                              primary: Colors.white,
+                              backgroundColor: Colors.white,
                               fixedSize: const Size.fromHeight(39),
                               padding: const EdgeInsets.all(8)),
                           onPressed: () {
@@ -94,7 +94,7 @@ class _CustomDialogWidgetState extends State<CustomDialogWidget> {
                       Expanded(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).primaryColor,
+                              backgroundColor: Theme.of(context).primaryColor,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12.0),
                               ),

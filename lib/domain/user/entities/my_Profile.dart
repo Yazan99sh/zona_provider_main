@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:zona_provider_main/domain/user/entities/user_info.dart';
 
 class MyProfile {
