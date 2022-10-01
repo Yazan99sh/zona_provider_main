@@ -32,6 +32,7 @@ class UserInfo {
     String? phone,
     Gender? gender,
     DateTime? dateOfBirth,
+    String? profileImage,
   }) {
     return UserInfo(
       id: id,
@@ -41,8 +42,8 @@ class UserInfo {
       phone: phone ?? this.phone,
       gender: gender ?? this.gender,
       email: email ?? this.email,
-      profileImage: profileImage,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      profileImage: profileImage ?? this.profileImage,
     );
   }
 }

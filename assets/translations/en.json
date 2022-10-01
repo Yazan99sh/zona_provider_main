@@ -39,5 +39,22 @@
   "incorrect_password": "Incorrect password",
   "forgot_password": "Forgot password?",
   "do_you_want_to_change_password": "Do you want to change password?",
-  "do_you_want_to_set_password": "Do you want to set password?"
+  "do_you_want_to_set_password": "Do you want to set password?",
+  "first_name": "First name",
+  "last_name": "Last name",
+  "email": "Email",
+  "confirm_password": "Confirm password",
+  "phone_number": "Phone number",
+  "gender": "Gender",
+  "date_of_birth": "Date of birth",
+  "reset_password": "Reset password",
+  "save": "Save",
+  "check_reset_password_code": "Check reset password code",
+  "check": "Check",
+  "code_reset": "Code reset",
+  "my_profile": "My profile",
+  "e_mail": "E-mail",
+  "male": "Male",
+  "female": "Female",
+  "edit": "Edit"
 }

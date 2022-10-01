@@ -12,11 +12,13 @@ import 'package:zona_provider_main/data/auth/models/user_model/user_model.dart';
 import 'package:zona_provider_main/data/core/repositories/base_repository_impl.dart';
 import 'package:zona_provider_main/data/core/utils/configuration.dart';
 import 'package:zona_provider_main/data/user/models/enums/gender_model.dart';
+import 'package:zona_provider_main/data/user/models/my_profile_model/my_profile_model.dart';
 import 'package:zona_provider_main/domain/auth/entities/user.dart';
 import 'package:zona_provider_main/domain/auth/repositories/auth_repository.dart';
 import 'package:zona_provider_main/domain/core/entities/failures.dart';
 import 'package:zona_provider_main/domain/core/utils/network/network_info.dart';
 import 'package:zona_provider_main/domain/user/entities/enums/gender.dart';
+import 'package:zona_provider_main/domain/user/entities/my_Profile.dart';
 import 'package:zona_provider_main/domain/user/entities/user_info.dart';
 import 'package:zona_provider_main/data/user/models/user_info_model/user_info_model.dart';
 import 'package:zona_provider_main/presentation/core/blocs/core/base_state.dart';
@@ -112,37 +114,106 @@ class AuthRepositoryImpl extends BaseRepositoryImpl implements AuthRepository {
   Future<Either<Failure, BaseState>> requestResetPassword({
     required String email,
   }) {
-    return request(() async {
-      final result = await remote.requestResetPassword(
-        email: email,
-      );
-      return right(result.data);
-    });
+    return request(
+      () async {
+        final result = await remote.requestResetPassword(
+          email: email,
+        );
+        return right(result.data);
+      },
+      checkToken: false,
+    );
   }
 
   @override
   Future<Either<Failure, BaseState>> checkResetPasswordCode({
     required String resetPasswordCode,
   }) {
-    return request(() async {
-      final result = await remote.checkResetPasswordCode(
-        resetPasswordCode: resetPasswordCode,
-      );
-      return right(result.data);
-    });
-  }  @override
+    return request(
+      () async {
+        final result = await remote.checkResetPasswordCode(
+          resetPasswordCode: resetPasswordCode,
+        );
+        return right(result.data);
+      },
+      checkToken: false,
+    );
+  }
+
+  @override
   Future<Either<Failure, BaseState>> resetPassword({
     required String resetPasswordCode,
     required String password,
     required String passwordConfirmation,
   }) {
+    return request(
+      () async {
+        final result = await remote.resetPassword(
+          resetPasswordCode: resetPasswordCode,
+          password: password,
+          passwordConfirmation: passwordConfirmation,
+        );
+        return right(result.data);
+      },
+      checkToken: false,
+    );
+  }
+
+  @override
+  Future<Either<Failure, MyProfile>> getMine() {
+    final UserModel? userModel = local.getSignedInUser();
     return request(() async {
-      final result = await remote.resetPassword(
-        resetPasswordCode: resetPasswordCode,
-        password: password,
-        passwordConfirmation: passwordConfirmation,
+      final result = await remote.getMine(
+        id: userModel!.userInfo.id,
       );
-      return right(result.data);
+      return right(result.toDomain());
+    });
+  }
+
+  @override
+  Future<Either<Failure, MyProfile>> updateProfile(
+      {
+      required String email,
+      required String firstName,
+      required String lastName,
+      required String phone,
+      Gender? gender,
+      File? profileImage,
+      DateTime? dateOfBirth}) {
+    return request(() async {
+      final result = await remote.updateProfile(
+        id: local.getSignedInUser()!.userInfo.id,
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        phone: phone,
+        gender: genderModelFromDomainString(gender),
+        profileImage: profileImage,
+        dateOfBirth: dateOfBirth != null
+            ? DateFormat("yyyy-MM-dd hh:mm:ss").format(dateOfBirth)
+            : null,
+      );
+      local.signInUser(UserModel(local.getSignedInUser()!.accessToken, UserInfoModel(
+        id: local.getSignedInUser()!.userInfo.id,
+        profileImage: result.data?.profileImage,
+        gender: result.data?.gender,
+        dateOfBirth: dateOfBirth,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+      )));
+      local.authStatus.add(UserInfoModel(
+        id: local.getSignedInUser()!.userInfo.id,
+        profileImage: result.data?.profileImage,
+        gender: result.data?.gender,
+        dateOfBirth: dateOfBirth,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+      ));
+      return right(result.toDomain());
     });
   }
 }

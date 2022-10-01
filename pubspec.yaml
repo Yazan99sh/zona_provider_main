@@ -44,6 +44,7 @@ dependencies:
   intl_phone_number_input: ^0.7.0+2
   responsive_framework: ^0.1.8
   http_parser: ^4.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

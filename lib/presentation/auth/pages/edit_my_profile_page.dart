@@ -1,33 +1,35 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:zona_provider_main/domain/auth/entities/user.dart';
 import 'package:zona_provider_main/domain/user/entities/enums/gender.dart';
+import 'package:zona_provider_main/domain/user/entities/my_Profile.dart';
+import 'package:zona_provider_main/domain/user/entities/user_info.dart';
 import 'package:zona_provider_main/injection.dart';
-import 'package:zona_provider_main/presentation/auth/blocs/sign_up_bloc/sign_up_bloc.dart';
+import 'package:zona_provider_main/presentation/auth/blocs/update_profile_up_bloc/update_profile_bloc.dart';
+import 'package:zona_provider_main/presentation/core/auth/auth_bloc.dart';
 import 'package:zona_provider_main/presentation/core/blocs/core/base_state.dart';
 import 'package:zona_provider_main/presentation/core/widgets/back_leading_icon.dart';
 import 'package:zona_provider_main/presentation/core/widgets/custom_app_bar.dart';
 import 'package:zona_provider_main/presentation/core/widgets/custom_drop_down_widget.dart';
-import 'package:zona_provider_main/presentation/core/widgets/password_control.dart';
 import 'package:zona_provider_main/presentation/core/widgets/phone_number_control.dart';
 import 'package:zona_provider_main/presentation/core/widgets/present_date_picker.dart';
 import 'package:zona_provider_main/presentation/core/widgets/screen_loader.dart';
 import 'package:zona_provider_main/presentation/core/widgets/screen_utils.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+class EditMuProfilePage extends StatefulWidget {
+  const EditMuProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<EditMuProfilePage> createState() => _EditMuProfilePageState();
 }
 
-class _SignUpPageState extends State<SignUpPage>
-    with ScreenLoader<SignUpPage>, ScreenUtils {
+class _EditMuProfilePageState extends State<EditMuProfilePage>
+    with ScreenLoader<EditMuProfilePage>, ScreenUtils {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormFieldState> _firstNameFormFieldKey =
       GlobalKey<FormFieldState>();
@@ -36,29 +38,38 @@ class _SignUpPageState extends State<SignUpPage>
   final GlobalKey<FormFieldState> _emailFormFieldKey =
       GlobalKey<FormFieldState>();
 
-  late MultiValidator _passwordValidator;
-
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   DateTime? dateOfBirth;
   Gender _gender = Gender.male;
   String? _genderTypeAsString;
   File? _updatedImage;
   final ImagePicker _picker = ImagePicker();
-  final SignUpBloc _signUpBloc = getIt<SignUpBloc>();
 
+  UserInfo? userInfo;
+  final UpdateProfileBloc _updateProfileBloc = getIt<UpdateProfileBloc>();
   @override
   void initState() {
-    _passwordValidator = MultiValidator([
-      RequiredValidator(errorText: 'field_required_message'.tr()),
-      MinLengthValidator(8, errorText: 'password_length_error_message'.tr()),
-    ]);
+    if (BlocProvider.of<AuthBloc>(context).state is Authenticated) {
+      userInfo =
+          (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
+
+      _firstNameController.text = userInfo?.firstName ?? '';
+      _lastNameController.text = userInfo?.lastName ?? '';
+      _emailController.text = userInfo?.email ?? '';
+      _phoneController.text = userInfo?.phone ?? '';
+      if (userInfo!.dateOfBirth != null) {
+        _dateOfBirthController.text =
+            DateFormat('yyyy-MM-dd').format(userInfo!.dateOfBirth!);
+      }
+      if (userInfo!.gender != null) {
+        _gender = userInfo!.gender!;
+        _genderTypeAsString = fromGenderTypeToString(userInfo!.gender!);
+      }
+    }
     super.initState();
   }
 
@@ -67,17 +78,17 @@ class _SignUpPageState extends State<SignUpPage>
     return Scaffold(
       appBar: CustomAppBar(
         leading: const BackLeadingIcon(),
-        title: Text(
-          'sign_up'.tr(),
-          style: const TextStyle(
+        title: const Text(
+          'edit',
+          style: TextStyle(
             fontSize: 20,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.bold,
           ),
-        ),
+        ).tr(),
         centerTitle: true,
       ),
-      body: BlocListener<SignUpBloc, BaseState<User>>(
-        bloc: _signUpBloc,
+      body: BlocListener<UpdateProfileBloc, BaseState<MyProfile>>(
+        bloc: _updateProfileBloc,
         listener: (BuildContext context, state) {
           if (state.isInProgress) {
             startLoading();
@@ -99,38 +110,46 @@ class _SignUpPageState extends State<SignUpPage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Center(
-                        child: InkWell(
-                          highlightColor: Colors.transparent,
-                          splashColor: Colors.transparent,
+                        child: GestureDetector(
                           onTap: () async {
                             final image = await _picker.pickImage(
                                 source: ImageSource.gallery);
-                            if (image != null) {
-                              _updatedImage = File(image.path);
-                            }
 
-                            setState(() {});
+                            setState(() {
+                              _updatedImage =
+                                  image == null ? null : File(image.path);
+                            });
                           },
                           child: Container(
-                            height: 70,
                             width: 70,
+                            height: 70,
                             decoration: BoxDecoration(
-                              color: Theme.of(context).cardColor,
-                              shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(10),
+                                color: Theme.of(context).cardColor),
+                            child: Builder(
+                              builder: (context) {
+                                if (_updatedImage != null) {
+                                  return ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.file(
+                                        _updatedImage!,
+                                        fit: BoxFit.cover,
+                                      ));
+                                } else {
+                                  if (userInfo?.profileImage != null) {
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        imageUrl: '${userInfo!.profileImage}',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    );
+                                  } else {
+                                    return const Icon(Icons.camera);
+                                  }
+                                }
+                              },
                             ),
-                            child: Center(
-                                child: _updatedImage == null
-                                    ? const Icon(Icons.camera)
-                                    : ClipRRect(
-                                        borderRadius: BorderRadius.circular(15),
-                                        child: Image.file(
-                                          _updatedImage!,
-                                          height: 70,
-                                          width: 70,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      )),
                           ),
                         ),
                       ),
@@ -252,54 +271,7 @@ class _SignUpPageState extends State<SignUpPage>
                             });
                           }
                         },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 20,
-                          top: 20,
-                        ),
-                        child: PasswordControl(
-                          labelText: 'password'.tr(),
-                          controller: _passwordController,
-                          validator: _passwordValidator,
-                        ),
-                      ),
-                      PasswordControl(
-                        labelText: 'confirm_password'.tr(),
-                        controller: _confirmPasswordController,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'field_required_message'.tr();
-                          }
-                          if (!MinLengthValidator(8,
-                                  errorText:
-                                      'password_length_error_message'.tr())
-                              .isValid(text.toLowerCase())) {
-                            return 'password_length_error_message'.tr();
-                          }
-
-                          if (!RequiredValidator(
-                                  errorText: 'field_required_message'.tr())
-                              .isValid(text.toLowerCase())) {
-                            return 'field_required_message'.tr();
-                          }
-                          if (_passwordController.text !=
-                              _confirmPasswordController.text) {
-                            return 'passwords_did_not_match'.tr();
-                          }
-                          return null;
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 20,
-                          bottom: 12,
-                        ),
-                        child: Text(
-                          'phone_number'.tr(),
-                          style: const TextStyle(fontSize: 15.0),
-                        ),
-                      ),
+                      ),const SizedBox(height: 20,),
                       PhoneNumberControl(
                         phoneController: _phoneController,
                       ),
@@ -318,18 +290,17 @@ class _SignUpPageState extends State<SignUpPage>
           onPressed: () {
             if (!_formKey.currentState!.validate()) return;
 
-            _signUpBloc.add(SignUpRequested(
+            _updateProfileBloc.add(UpdateProfileRequested(
               email: _emailController.text,
               firstName: _firstNameController.text,
               lastName: _lastNameController.text,
               phone: _phoneController.text,
-              password: _passwordController.text,
               gender: _gender,
               dateOfBirth: dateOfBirth,
               profileImage: _updatedImage,
             ));
           },
-          child: const Text('sign_up').tr(),
+          child: const Text('edit').tr(),
         ),
       ),
     );

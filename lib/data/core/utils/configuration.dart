@@ -10,7 +10,7 @@ abstract class Configuration {
 @LazySingleton(as: Configuration, env: [AppEnvironment.dev])
 class DevConfiguration implements Configuration {
   @override
-  String get getBaseUrl => 'http://new.zona.ae/public/api';
+  String get getBaseUrl => 'http://new.zona.ae';
 
   @override
   String get name => 'development';
@@ -19,7 +19,7 @@ class DevConfiguration implements Configuration {
 @LazySingleton(as: Configuration, env: [AppEnvironment.staging])
 class StagingConfiguration implements Configuration {
   @override
-  String get getBaseUrl => 'http://new.zona.ae/public/api';
+  String get getBaseUrl => 'http://new.zona.ae';
 
   @override
   String get name => 'staging';
@@ -28,7 +28,7 @@ class StagingConfiguration implements Configuration {
 @LazySingleton(as: Configuration, env: [AppEnvironment.prod])
 class ProductionConfiguration implements Configuration {
   @override
-  String get getBaseUrl => 'http://new.zona.ae/public/api';
+  String get getBaseUrl => 'http://new.zona.ae';
 
   @override
   String get name => 'production';

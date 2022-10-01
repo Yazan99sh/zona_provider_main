@@ -7,15 +7,15 @@ part of 'user_info_model.dart';
 // **************************************************************************
 
 UserInfoModel _$UserInfoModelFromJson(Map json) => UserInfoModel(
-      json['id'] as int,
-      json['first_name'] as String?,
-      json['last_name'] as String?,
-      json['name'] as String?,
-      json['phone'] as String?,
-      $enumDecodeNullable(_$GenderModelEnumMap, json['gender']),
-      json['email'] as String?,
-      json['profile_image'] as String?,
-      mapDateTimeFromJson(json['date_of_birth']),
+      id: json['id'] as int,
+      firstName: json['first_name'] as String?,
+      lastName: json['last_name'] as String?,
+      name: json['name'] as String?,
+      phone: json['phone'] as String?,
+      gender: $enumDecodeNullable(_$GenderModelEnumMap, json['gender']),
+      email: json['email'] as String?,
+      profileImage: json['profile_image'] as String?,
+      dateOfBirth: mapDateTimeFromJson(json['date_of_birth']),
     );
 
 Map<String, dynamic> _$UserInfoModelToJson(UserInfoModel instance) {

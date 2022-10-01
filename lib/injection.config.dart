@@ -21,25 +21,30 @@ import 'data/core/utils/network/network_info.dart' as _i8;
 import 'domain/auth/repositories/auth_repository.dart' as _i12;
 import 'domain/auth/usecases/check_reset_password_code_use_case.dart' as _i14;
 import 'domain/auth/usecases/get_first_time_logged_use_case.dart' as _i15;
-import 'domain/auth/usecases/get_signed_in_user_use_case.dart' as _i16;
-import 'domain/auth/usecases/login_use_case.dart' as _i17;
-import 'domain/auth/usecases/logout_use_case.dart' as _i18;
-import 'domain/auth/usecases/reset_password_use_case.dart' as _i20;
-import 'domain/auth/usecases/rquest_reset_password_use_case.dart' as _i19;
-import 'domain/auth/usecases/set_first_time_logged_use_case.dart' as _i21;
-import 'domain/auth/usecases/sign_up_use_case.dart' as _i22;
-import 'domain/auth/usecases/subscribe_to_auth_status.dart' as _i23;
+import 'domain/auth/usecases/get_mine_use_case.dart' as _i16;
+import 'domain/auth/usecases/get_signed_in_user_use_case.dart' as _i17;
+import 'domain/auth/usecases/login_use_case.dart' as _i18;
+import 'domain/auth/usecases/logout_use_case.dart' as _i19;
+import 'domain/auth/usecases/reset_password_use_case.dart' as _i21;
+import 'domain/auth/usecases/rquest_reset_password_use_case.dart' as _i20;
+import 'domain/auth/usecases/set_first_time_logged_use_case.dart' as _i22;
+import 'domain/auth/usecases/sign_up_use_case.dart' as _i23;
+import 'domain/auth/usecases/subscribe_to_auth_status.dart' as _i24;
+import 'domain/auth/usecases/update_profile_use_case.dart' as _i25;
 import 'domain/core/utils/network/network_info.dart' as _i7;
-import 'injectable_module.dart' as _i30;
+import 'injectable_module.dart' as _i34;
 import 'presentation/auth/blocs/check_reset_password_code_bloc/check_reset_password_code_bloc.dart'
-    as _i25;
-import 'presentation/auth/blocs/login/login_bloc.dart' as _i26;
-import 'presentation/auth/blocs/request_reset_password_bloc/request_reset_password_bloc.dart'
     as _i27;
+import 'presentation/auth/blocs/get_mine_bloc/get_mine_bloc.dart' as _i28;
+import 'presentation/auth/blocs/login/login_bloc.dart' as _i29;
+import 'presentation/auth/blocs/request_reset_password_bloc/request_reset_password_bloc.dart'
+    as _i30;
 import 'presentation/auth/blocs/reset_password_bloc/reset_password_bloc.dart'
-    as _i28;
-import 'presentation/auth/blocs/sign_up_bloc/sign_up_bloc.dart' as _i29;
-import 'presentation/core/auth/auth_bloc.dart' as _i24;
+    as _i31;
+import 'presentation/auth/blocs/sign_up_bloc/sign_up_bloc.dart' as _i32;
+import 'presentation/auth/blocs/update_profile_up_bloc/update_profile_bloc.dart'
+    as _i33;
+import 'presentation/core/auth/auth_bloc.dart' as _i26;
 
 const String _dev = 'dev';
 const String _staging = 'staging';
@@ -82,39 +87,48 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
           repository: get<_i12.AuthRepository>()));
   gh.lazySingleton<_i15.GetFirstTimeLoggedUseCase>(
       () => _i15.GetFirstTimeLoggedUseCase(get<_i12.AuthRepository>()));
-  gh.lazySingleton<_i16.GetSignedInUserUseCase>(
-      () => _i16.GetSignedInUserUseCase(get<_i12.AuthRepository>()));
-  gh.lazySingleton<_i17.LoginUseCase>(
-      () => _i17.LoginUseCase(get<_i12.AuthRepository>()));
-  gh.lazySingleton<_i18.LogoutUseCase>(
-      () => _i18.LogoutUseCase(repository: get<_i12.AuthRepository>()));
-  gh.lazySingleton<_i19.RequestResetPasswordUseCase>(() =>
-      _i19.RequestResetPasswordUseCase(repository: get<_i12.AuthRepository>()));
-  gh.lazySingleton<_i20.ResetPasswordUseCase>(
-      () => _i20.ResetPasswordUseCase(repository: get<_i12.AuthRepository>()));
-  gh.lazySingleton<_i21.SetFirstTimeLoggedUseCase>(
-      () => _i21.SetFirstTimeLoggedUseCase(get<_i12.AuthRepository>()));
-  gh.lazySingleton<_i22.SignUpUseCase>(
-      () => _i22.SignUpUseCase(repository: get<_i12.AuthRepository>()));
-  gh.lazySingleton<_i23.SubscribeToAuthStatusUseCase>(
-      () => _i23.SubscribeToAuthStatusUseCase(get<_i12.AuthRepository>()));
-  gh.factory<_i24.AuthBloc>(() => _i24.AuthBloc(
-      get<_i16.GetSignedInUserUseCase>(),
-      get<_i18.LogoutUseCase>(),
-      get<_i23.SubscribeToAuthStatusUseCase>(),
+  gh.lazySingleton<_i16.GetMineUseCase>(
+      () => _i16.GetMineUseCase(get<_i12.AuthRepository>()));
+  gh.lazySingleton<_i17.GetSignedInUserUseCase>(
+      () => _i17.GetSignedInUserUseCase(get<_i12.AuthRepository>()));
+  gh.lazySingleton<_i18.LoginUseCase>(
+      () => _i18.LoginUseCase(get<_i12.AuthRepository>()));
+  gh.lazySingleton<_i19.LogoutUseCase>(
+      () => _i19.LogoutUseCase(repository: get<_i12.AuthRepository>()));
+  gh.lazySingleton<_i20.RequestResetPasswordUseCase>(() =>
+      _i20.RequestResetPasswordUseCase(repository: get<_i12.AuthRepository>()));
+  gh.lazySingleton<_i21.ResetPasswordUseCase>(
+      () => _i21.ResetPasswordUseCase(repository: get<_i12.AuthRepository>()));
+  gh.lazySingleton<_i22.SetFirstTimeLoggedUseCase>(
+      () => _i22.SetFirstTimeLoggedUseCase(get<_i12.AuthRepository>()));
+  gh.lazySingleton<_i23.SignUpUseCase>(
+      () => _i23.SignUpUseCase(repository: get<_i12.AuthRepository>()));
+  gh.lazySingleton<_i24.SubscribeToAuthStatusUseCase>(
+      () => _i24.SubscribeToAuthStatusUseCase(get<_i12.AuthRepository>()));
+  gh.lazySingleton<_i25.UpdateProfileUseCase>(
+      () => _i25.UpdateProfileUseCase(repository: get<_i12.AuthRepository>()));
+  gh.factory<_i26.AuthBloc>(() => _i26.AuthBloc(
+      get<_i17.GetSignedInUserUseCase>(),
+      get<_i16.GetMineUseCase>(),
+      get<_i19.LogoutUseCase>(),
+      get<_i24.SubscribeToAuthStatusUseCase>(),
       get<_i15.GetFirstTimeLoggedUseCase>(),
-      get<_i21.SetFirstTimeLoggedUseCase>()));
-  gh.factory<_i25.CheckResetPasswordCodeBloc>(() =>
-      _i25.CheckResetPasswordCodeBloc(
+      get<_i22.SetFirstTimeLoggedUseCase>()));
+  gh.factory<_i27.CheckResetPasswordCodeBloc>(() =>
+      _i27.CheckResetPasswordCodeBloc(
           get<_i14.CheckResetPasswordCodeUseCase>()));
-  gh.factory<_i26.LoginBloc>(
-      () => _i26.LoginBloc(login: get<_i17.LoginUseCase>()));
-  gh.factory<_i27.RequestResetPasswordBloc>(() =>
-      _i27.RequestResetPasswordBloc(get<_i19.RequestResetPasswordUseCase>()));
-  gh.factory<_i28.ResetPasswordBloc>(
-      () => _i28.ResetPasswordBloc(get<_i20.ResetPasswordUseCase>()));
-  gh.factory<_i29.SignUpBloc>(() => _i29.SignUpBloc(get<_i22.SignUpUseCase>()));
+  gh.factory<_i28.GetMineBloc>(
+      () => _i28.GetMineBloc(get<_i16.GetMineUseCase>()));
+  gh.factory<_i29.LoginBloc>(
+      () => _i29.LoginBloc(login: get<_i18.LoginUseCase>()));
+  gh.factory<_i30.RequestResetPasswordBloc>(() =>
+      _i30.RequestResetPasswordBloc(get<_i20.RequestResetPasswordUseCase>()));
+  gh.factory<_i31.ResetPasswordBloc>(
+      () => _i31.ResetPasswordBloc(get<_i21.ResetPasswordUseCase>()));
+  gh.factory<_i32.SignUpBloc>(() => _i32.SignUpBloc(get<_i23.SignUpUseCase>()));
+  gh.factory<_i33.UpdateProfileBloc>(
+      () => _i33.UpdateProfileBloc(get<_i25.UpdateProfileUseCase>()));
   return get;
 }
 
-class _$InjectableModule extends _i30.InjectableModule {}
+class _$InjectableModule extends _i34.InjectableModule {}

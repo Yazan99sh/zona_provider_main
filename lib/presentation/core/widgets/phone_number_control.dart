@@ -39,7 +39,6 @@ class _PhoneNumberControlState extends State<PhoneNumberControl> {
         isoCode: PhoneNumber.getISO2CodeByPrefix(
             '+965'),
       ),
-      selectorTextStyle: const TextStyle(color: Colors.white),
       selectorConfig: const SelectorConfig(
         selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
         leadingPadding: 10.0,

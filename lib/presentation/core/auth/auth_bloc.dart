@@ -1,5 +1,6 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:zona_provider_main/domain/auth/usecases/get_first_time_logged_use_case.dart';
+import 'package:zona_provider_main/domain/auth/usecases/get_mine_use_case.dart';
 
 //import 'package:zona_provider_main/domain/auth/usecases/get_mine_use_case.dart';
 import 'package:zona_provider_main/domain/auth/usecases/get_signed_in_user_use_case.dart';
@@ -20,7 +21,7 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final GetSignedInUserUseCase getSignedInUserUseCase;
 
-  //final GetMineUseCase getMineUseCase;
+  final GetMineUseCase getMineUseCase;
   final LogoutUseCase logoutUseCase;
   final SubscribeToAuthStatusUseCase subscribeToAuthStatusUseCase;
   final GetFirstTimeLoggedUseCase getFirstTimeLogged;
@@ -28,7 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc(
       this.getSignedInUserUseCase,
-      //  this.getMineUseCase,
+      this.getMineUseCase,
       this.logoutUseCase,
       this.subscribeToAuthStatusUseCase,
       this.getFirstTimeLogged,
@@ -49,17 +50,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthFailure(l));
         }, (user) async {
           if (user != null) {
-            // final result1 = await getMineUseCase.call(NoParams());
-            // await result1.fold((failure) async {}, (user) async {
-            //   emit(
-            //     Authenticated(
-            //       user: user,
-            //     ),
-            //   );
-            // });
-            emit(
-              Authenticated(),
-            );
+            final result1 = await getMineUseCase.call(NoParams());
+            await result1.fold((failure) async {}, (user) async {
+              emit(
+                Authenticated(
+                  user: UserInfo(
+                    id: user!.data!.id,
+                    name: user.data!.name,
+                    phone: user.data!.phone,
+                    email: user.data!.email,
+                    lastName: user.data!.lastName,
+                    firstName: user.data!.firstName,
+                    profileImage: user.data!.profileImage,
+                    dateOfBirth: user.data!.dateOfBirth,
+                    gender: user.data!.gender,
+                  ),
+                ),
+              );
+            });
           } else {
             return result2.fold(
               (l) => emit(AuthFailure(l)),
@@ -103,13 +111,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (event, emit) async {
         emit(
           Authenticated(
-            user: (state as Authenticated).user!.copyWith(
+            user: (state as Authenticated).user.copyWith(
                   firstName: event.user.firstName,
                   lastName: event.user.lastName,
                   phone: event.user.phone,
                   email: event.user.email,
                   dateOfBirth: event.user.dateOfBirth,
                   gender: event.user.gender,
+                  profileImage: event.user.profileImage,
                 ),
           ),
         );

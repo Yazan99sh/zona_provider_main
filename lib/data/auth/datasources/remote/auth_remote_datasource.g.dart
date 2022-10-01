@@ -30,13 +30,33 @@ class _AuthRemoteDataSourceImpl implements AuthRemoteDataSourceImpl {
                 headers: _headers,
                 extra: _extra,
                 contentType: 'application/x-www-form-urlencoded')
-            .compose(_dio.options, '/auth/login',
+            .compose(_dio.options, '/public/api/auth/login',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = BaseResponse<UserModel>.fromJson(
       _result.data!,
       (json) => UserModel.fromJson(json as Map<String, dynamic>),
     );
+    return value;
+  }
+
+  @override
+  Future<MyProfileModel> getMine({required id}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry('id', id.toString()));
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MyProfileModel>(Options(
+                method: 'POST',
+                headers: _headers,
+                extra: _extra,
+                contentType: 'application/x-www-form-urlencoded')
+            .compose(_dio.options, '/api/auth/get_user_data',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = MyProfileModel.fromJson(_result.data!);
     return value;
   }
 
@@ -49,7 +69,7 @@ class _AuthRemoteDataSourceImpl implements AuthRemoteDataSourceImpl {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<BaseResponse<UserModel>>(
             Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/auth/refresh-token',
+                .compose(_dio.options, '/public/api/auth/refresh-token',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = BaseResponse<UserModel>.fromJson(
@@ -98,13 +118,59 @@ class _AuthRemoteDataSourceImpl implements AuthRemoteDataSourceImpl {
                 headers: _headers,
                 extra: _extra,
                 contentType: 'application/x-www-form-urlencoded')
-            .compose(_dio.options, '/auth/register',
+            .compose(_dio.options, '/public/api/auth/register',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = BaseResponse<UserModel>.fromJson(
       _result.data!,
       (json) => UserModel.fromJson(json as Map<String, dynamic>),
     );
+    return value;
+  }
+
+  @override
+  Future<MyProfileModel> updateProfile(
+      {required id,
+      required email,
+      required firstName,
+      required lastName,
+      required phone,
+      gender,
+      profileImage,
+      dateOfBirth}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry('id', id.toString()));
+    _data.fields.add(MapEntry('email', email));
+    _data.fields.add(MapEntry('first_name', firstName));
+    _data.fields.add(MapEntry('last_name', lastName));
+    _data.fields.add(MapEntry('phone', phone));
+    if (gender != null) {
+      _data.fields.add(MapEntry('gender', gender));
+    }
+    if (profileImage != null) {
+      _data.files.add(MapEntry(
+          'profileImage',
+          MultipartFile.fromFileSync(profileImage.path,
+              filename: profileImage.path.split(Platform.pathSeparator).last,
+              contentType: MediaType.parse('application/jpg'))));
+    }
+    if (dateOfBirth != null) {
+      _data.fields.add(MapEntry('date_of_birth', dateOfBirth));
+    }
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MyProfileModel>(Options(
+                method: 'POST',
+                headers: _headers,
+                extra: _extra,
+                contentType: 'application/x-www-form-urlencoded')
+            .compose(_dio.options, '/api/auth/update_user_data',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = MyProfileModel.fromJson(_result.data!);
     return value;
   }
 
@@ -121,7 +187,7 @@ class _AuthRemoteDataSourceImpl implements AuthRemoteDataSourceImpl {
                 headers: _headers,
                 extra: _extra,
                 contentType: 'application/x-www-form-urlencoded')
-            .compose(_dio.options, 'auth/request-reset-password',
+            .compose(_dio.options, '/public/api/auth/request-reset-password',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = BaseResponse<dynamic>.fromJson(
@@ -145,7 +211,7 @@ class _AuthRemoteDataSourceImpl implements AuthRemoteDataSourceImpl {
                 headers: _headers,
                 extra: _extra,
                 contentType: 'application/x-www-form-urlencoded')
-            .compose(_dio.options, 'auth/check-reset-password-code',
+            .compose(_dio.options, '/public/api/auth/check-reset-password-code',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = BaseResponse<dynamic>.fromJson(
@@ -173,7 +239,7 @@ class _AuthRemoteDataSourceImpl implements AuthRemoteDataSourceImpl {
                 headers: _headers,
                 extra: _extra,
                 contentType: 'application/x-www-form-urlencoded')
-            .compose(_dio.options, 'auth/reset-password',
+            .compose(_dio.options, '/public/api/auth/reset-password',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = BaseResponse<dynamic>.fromJson(

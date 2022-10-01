@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:zona_provider_main/domain/auth/entities/user.dart';
 import 'package:zona_provider_main/domain/core/entities/failures.dart';
 import 'package:zona_provider_main/domain/user/entities/enums/gender.dart';
+import 'package:zona_provider_main/domain/user/entities/my_Profile.dart';
 import 'package:zona_provider_main/domain/user/entities/user_info.dart';
 import 'package:zona_provider_main/presentation/core/blocs/core/base_state.dart';
 
@@ -47,5 +48,17 @@ abstract class AuthRepository {
     required String resetPasswordCode,
     required String password,
     required String passwordConfirmation,
+  });
+
+  Future<Either<Failure, MyProfile>> getMine();
+
+  Future<Either<Failure, MyProfile>> updateProfile({
+    required String email,
+    required String firstName,
+    required String lastName,
+    required String phone,
+    Gender? gender,
+    File? profileImage,
+    DateTime? dateOfBirth,
   });
 }

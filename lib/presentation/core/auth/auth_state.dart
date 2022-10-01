@@ -5,10 +5,10 @@ abstract class AuthState {}
 class AuthInitial extends AuthState {}
 
 class Authenticated extends AuthState {
-  final UserInfo? user;
+  final UserInfo user;
 
   Authenticated({
-     this.user,
+     required this.user,
   });
 }
 

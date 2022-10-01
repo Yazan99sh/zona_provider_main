@@ -6,6 +6,7 @@ ThemeData getThemeData(BuildContext context) {
     primaryColor: Colors.black,
     cardColor: const Color(0xffF2F2F2),
     cardTheme: const CardTheme(color: Colors.grey),
+    backgroundColor: Colors.white,
     appBarTheme: AppBarTheme(
         color: Colors.transparent,
         elevation: 0.0,

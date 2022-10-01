@@ -23,8 +23,8 @@ class UserInfoModel {
   factory UserInfoModel.fromJson(Map<String, dynamic> json) =>
       _$UserInfoModelFromJson(json);
 
-  UserInfoModel(
-    this.id,
+  UserInfoModel({
+    required this.id,
     this.firstName,
     this.lastName,
     this.name,
@@ -33,7 +33,7 @@ class UserInfoModel {
     this.email,
     this.profileImage,
     this.dateOfBirth,
-  );
+  });
 
   Map<String, dynamic> toJson() => _$UserInfoModelToJson(this);
 
@@ -46,15 +46,15 @@ class UserInfoModel {
     DateTime? dateOfBirth,
   ) {
     return UserInfoModel(
-      id,
-      firstName ?? this.firstName,
-      lastName ?? this.lastName,
-      name,
-      phone ?? this.phone,
-      gender ?? this.gender,
-      email ?? this.email,
-      profileImage,
-      dateOfBirth ?? this.dateOfBirth,
+      id:id,
+      firstName:firstName ?? this.firstName,
+      lastName:lastName ?? this.lastName,
+      name:name,
+      phone:phone ?? this.phone,
+      gender:gender ?? this.gender,
+      email:email ?? this.email,
+      profileImage:profileImage,
+      dateOfBirth:dateOfBirth ?? this.dateOfBirth,
     );
   }
 }

@@ -9,14 +9,24 @@ extension ParseToString on Gender {
   }
 }
 
-extension MapFromStringType on Gender {
-  static Gender fromStringType(String str) {
-    if (str == 'male') {
-      return Gender.male;
-    } else if (str == 'female') {
-      return Gender.female;
-    } else {
-      return Gender.male;
+String fromGenderTypeToString(Gender type) {
+  switch (type) {
+    case Gender.male:
+      return 'male';
+    case Gender.female:
+    default:
+      return 'female';
+  }
+}
+
+extension GetGenderFromString on Gender {
+  Gender fromStringToGenderType(String prefix) {
+    switch (prefix.toLowerCase()) {
+      case 'male':
+        return Gender.male;
+      case 'female':
+      default:
+        return Gender.female;
     }
   }
 }
