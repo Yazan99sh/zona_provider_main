@@ -289,7 +289,6 @@ class _EditMuProfilePageState extends State<EditMuProfilePage>
         child: ElevatedButton(
           onPressed: () {
             if (!_formKey.currentState!.validate()) return;
-
             _updateProfileBloc.add(UpdateProfileRequested(
               email: _emailController.text,
               firstName: _firstNameController.text,
