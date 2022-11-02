@@ -18,14 +18,11 @@ class MyProfilePage extends StatefulWidget {
 }
 
 class _MyProfilePageState extends State<MyProfilePage> {
-  UserInfo? userInfo;
-
+  late final AuthBloc _authBloc;
   @override
   void initState() {
-    if (BlocProvider.of<AuthBloc>(context).state is Authenticated) {
-      userInfo =
-          (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
-    }
+    _authBloc = BlocProvider.of<AuthBloc>(context);
+
     super.initState();
   }
 
@@ -59,34 +56,39 @@ class _MyProfilePageState extends State<MyProfilePage> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(
-          top: 25,
-          left: 17,
-          right: 17,
-        ),
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(10),
-              margin: const EdgeInsets.only(
-                bottom: 10,
+      body: BlocBuilder<AuthBloc, AuthState>(
+        bloc: _authBloc,
+        builder: (context, state) {
+          if (state is Authenticated) {
+            final UserInfo userInfo = state.user;
+            return SingleChildScrollView(
+              padding: const EdgeInsets.only(
+                top: 25,
+                left: 17,
+                right: 17,
               ),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimary,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(35),
-                    child: (userInfo?.profileImage?.isNotEmpty ?? false)
-                        ? CachedNetworkImage(
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.only(
+                      bottom: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(35),
+                          child: (userInfo.profileImage?.isNotEmpty ?? false)
+                              ? CachedNetworkImage(
                             placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
-                            imageUrl: userInfo?.profileImage ?? '',
+                            const CircularProgressIndicator(),
+                            imageUrl: userInfo.profileImage ?? '',
                             fit: BoxFit.cover,
                             width: 65,
                             height: 65,
@@ -95,83 +97,90 @@ class _MyProfilePageState extends State<MyProfilePage> {
                               size: 65,
                             ),
                           )
-                        : const Icon(
+                              : const Icon(
                             Icons.account_circle,
                             size: 65,
                           ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                userInfo.fullName ,
+                                style:
+                                Theme.of(context).textTheme.headline3!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                userInfo.email ?? '',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline3
+                                    ?.copyWith(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .caption
+                                        ?.color),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.only(
+                      bottom: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          userInfo?.fullName ?? '',
-                          style:
-                              Theme.of(context).textTheme.headline3!.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          userInfo?.email ?? '',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline3
-                              ?.copyWith(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .caption
-                                      ?.color),
-                        ),
+                        if (userInfo.phone?.isNotEmpty ?? false)
+                          ProfileItemWidget(
+                            title: 'phone_number',
+                            description: userInfo.phone!,
+                          ),
+                        if (userInfo.email?.isNotEmpty ?? false)
+                          ProfileItemWidget(
+                              title: 'email', description: userInfo.email!),
+                        if (userInfo.gender != null)
+                          ProfileItemWidget(
+                            title: 'gender',
+                            description:
+                            userInfo.gender.toString().split('.').last.tr(),
+                          ),
+                        if (userInfo.dateOfBirth != null)
+                          ProfileItemWidget(
+                              title: 'date_of_birth',
+                              description: DateFormat('yyyy-MM-dd')
+                                  .format(userInfo.dateOfBirth!)),
                       ],
                     ),
                   ),
                 ],
               ),
-            ),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(10),
-              margin: const EdgeInsets.only(
-                bottom: 10,
-              ),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimary,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (userInfo?.phone?.isNotEmpty ?? false)
-                    ProfileItemWidget(
-                      title: 'phone_number',
-                      description: userInfo!.phone!,
-                    ),
-                  if (userInfo?.email?.isNotEmpty ?? false)
-                    ProfileItemWidget(
-                        title: 'email', description: userInfo!.email!),
-                  if (userInfo?.gender != null)
-                    ProfileItemWidget(
-                      title: 'gender',
-                      description:
-                          userInfo!.gender.toString().split('.').last.tr(),
-                    ),
-                  if (userInfo?.dateOfBirth != null)
-                    ProfileItemWidget(
-                        title: 'date_of_birth',
-                        description: DateFormat('yyyy-MM-dd')
-                            .format(userInfo!.dateOfBirth!)),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
+      )
+
+      ,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -97,6 +98,8 @@ class _EditMuProfilePageState extends State<EditMuProfilePage>
             showError(failure: state.failure, isFloating: true);
           } else if (state.isSuccess) {
             stopLoading();
+            showSuccess();
+            AutoRouter.of(context).pop();
           }
         },
         child: SingleChildScrollView(

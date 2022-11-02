@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zona_provider_main/domain/user/entities/user_info.dart';
 import 'package:zona_provider_main/presentation/core/auth/auth_bloc.dart';
 import 'package:zona_provider_main/presentation/core/routes/router.gr.dart';
+import 'package:zona_provider_main/presentation/core/utils/custom_dialog.dart';
 import 'package:zona_provider_main/presentation/core/widgets/user_profile_widget.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -57,7 +58,25 @@ class _AppDrawerState extends State<AppDrawer> {
                   onTap: () {
                     _navigateRoute(const HomePageRoute(), context);
                   },
+                ),    ListTile(
+                  leading: Icon(
+                    Icons.logout,
+                    color: Theme.of(context).errorColor,
+                  ),
+                  title: const Text('logout').tr(),
+                  onTap: () {
+                    CustomDialog().showCustomDialog(
+                      context,
+                      title: 'logout'.tr(),
+                      message: 'are_you_sure_you_want_to_logout'.tr(),
+                      buttonName: 'exit'.tr(),
+                      onButtonClick: () {
+                        BlocProvider.of<AuthBloc>(context).add(AuthLogout());
+                      },
+                    );
+                  },
                 ),
+
               ],
             ),
           )

@@ -236,6 +236,8 @@ class _SignUpPageState extends State<SignUpPage>
                         controller: _dateOfBirthController,
                         decoration: InputDecoration(
                           hintText: 'date_of_birth'.tr(),
+                          hintStyle: TextStyle(color: Theme.of(context)
+                              .colorScheme.secondary),
                           suffixIcon: Icon(
                             Icons.calendar_month_rounded,
                             color: Theme.of(context).primaryColor,

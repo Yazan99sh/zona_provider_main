@@ -68,9 +68,9 @@ class CustomDropDownWidget<T> extends StatelessWidget {
                     hint!,
                     style: TextStyle(
                         color: Theme.of(context)
-                            .inputDecorationTheme
-                            .hintStyle!
-                            .color),
+                            .colorScheme.secondary
+
+                    ),
                   )
                 : const SizedBox(),
             iconSize: 20.0,

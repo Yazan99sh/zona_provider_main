@@ -56,5 +56,9 @@
   "e_mail": "E-mail",
   "male": "Male",
   "female": "Female",
-  "edit": "Edit"
+  "edit": "Edit",
+  "are_you_sure_you_want_to_logout": "Are you sure you want to logout?",
+  "logout": "Logout",
+  "exit": "Exit",
+  "close": "Close"
 }
