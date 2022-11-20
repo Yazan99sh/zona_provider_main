@@ -2,7 +2,7 @@
     package="com.example.zona_provider_main">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="zona_provider_main"
+        android:label="Zona provider"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

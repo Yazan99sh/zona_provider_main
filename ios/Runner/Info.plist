@@ -13,7 +13,7 @@
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
-		<string>zona_provider_main</string>
+		<string>Zona provider</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
@@ -49,5 +49,7 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+			<key>NSPhotoLibraryUsageDescription</key>
+        	<string>This app needs access to Photo Library to set service pic</string>
 	</dict>
 </plist>
