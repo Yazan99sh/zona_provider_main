@@ -5,6 +5,8 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:zona_provider_main/injection.dart';
 import 'package:zona_provider_main/presentation/core/resources/theme.dart';
 import 'package:zona_provider_main/presentation/core/routes/router.dart';
+import 'package:zona_provider_main/presentation/service/blocs/category_list_bloc/category_list_bloc.dart';
+import 'package:zona_provider_main/presentation/service/blocs/provider_list_bloc/provider_list_bloc.dart';
 import 'presentation/core/auth/auth_bloc.dart';
 
 class App extends StatefulWidget {
@@ -25,6 +27,8 @@ class _AppState extends State<App> {
           create: (BuildContext context) =>
               getIt<AuthBloc>()..add(SubscribeToAuthStatus()),
         ),
+        BlocProvider(create: (BuildContext context)=> getIt<CategoryListBloc>()),
+        BlocProvider(create: (BuildContext context)=> getIt<ProviderListBloc>()),
       ],
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,

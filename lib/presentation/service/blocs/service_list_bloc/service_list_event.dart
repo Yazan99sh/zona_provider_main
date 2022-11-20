@@ -10,3 +10,10 @@ class ServiceListRequested extends ServiceListEvent {
     required this.serviceFilter,
   });
 }
+class ServiceListDelete extends ServiceListEvent {
+  final String id;
+
+  ServiceListDelete({
+    required this.id,
+  });
+}

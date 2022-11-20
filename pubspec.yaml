@@ -60,6 +60,11 @@ dev_dependencies:
   retrofit_generator: ^4.0.1
   flutter_localizations:
     sdk: flutter
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"
+  remove_alpha_ios: true
 flutter_gen:
   output: lib/presentation/core/utils/generated_assets/
   integrations:

@@ -8,6 +8,7 @@ class BaseResponse<T> {
   final String? message;
   final int? totalRecords;
   final T? data;
+  @JsonKey(name: 'code', fromJson: mapCodeFromJson)
   final int? code;
 
   BaseResponse({
@@ -20,4 +21,9 @@ class BaseResponse<T> {
   factory BaseResponse.fromJson(
           Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
       _$BaseResponseFromJson(json, fromJsonT);
+}
+int? mapCodeFromJson(value) {
+  if (value is String) return int.tryParse(value);
+
+  return value;
 }

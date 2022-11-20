@@ -9,6 +9,7 @@ import 'package:zona_provider_main/presentation/auth/pages/sign_up_page.dart';
 import 'package:zona_provider_main/presentation/core/pages/onboarding_page.dart';
 import 'package:zona_provider_main/presentation/core/pages/splash_page.dart';
 import 'package:zona_provider_main/presentation/home/pages/home_page.dart';
+import 'package:zona_provider_main/presentation/service/pages/add_edit_service_page.dart';
 export 'router.gr.dart';
 
 @MaterialAutoRouter(
@@ -23,6 +24,7 @@ export 'router.gr.dart';
     AutoRoute(page: MyProfilePage),
     AutoRoute(page: EditMuProfilePage),
     AutoRoute(page: HomePage),
+    AutoRoute(page: AddEditServicePage),
   ],
 )
 class $AppRouter {}

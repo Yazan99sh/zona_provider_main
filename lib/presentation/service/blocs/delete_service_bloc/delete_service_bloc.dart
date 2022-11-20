@@ -7,10 +7,10 @@ import 'package:zona_provider_main/presentation/core/blocs/core/base_state.dart'
 part 'delete_service_event.dart';
 
 @LazySingleton()
-class DeleteUserBloc extends Bloc<DeleteServiceEvent, BaseState<String>> {
+class DeleteServiceBloc extends Bloc<DeleteServiceEvent, BaseState<String>> {
   final DeleteServiceUseCase deleteServiceUseCase;
 
-  DeleteUserBloc(this.deleteServiceUseCase) : super(const BaseState()) {
+  DeleteServiceBloc(this.deleteServiceUseCase) : super(const BaseState()) {
     on<DeleteServiceRequested>(
       (event, emit) async {
         emit(state.setInProgressState());

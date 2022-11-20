@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:zona_provider_main/domain/service/usecases/update_user_use_case.dart';
+import 'package:zona_provider_main/domain/service/usecases/update_service_use_case.dart';
 import 'package:zona_provider_main/presentation/core/blocs/core/base_state.dart';
 
 part 'update_service_event.dart';

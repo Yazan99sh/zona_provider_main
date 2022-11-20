@@ -14,7 +14,7 @@ BaseResponse<T> _$BaseResponseFromJson<T>(
       message: json['message'] as String? ?? '',
       totalRecords: json['totalRecords'] as int?,
       data: _$nullableGenericFromJson(json['data'], fromJsonT),
-      code: json['code'] as int?,
+      code: mapCodeFromJson(json['code']),
     );
 
 T? _$nullableGenericFromJson<T>(

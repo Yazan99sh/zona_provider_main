@@ -68,6 +68,9 @@ class ErrorView extends StatelessWidget {
         } else if ((failure as ServerFailure?)!.errorCode ==
             ServerErrorCode.forbidden) {
           errorMessage = 'access_denied_message'.tr();
+        }else if ((failure as ServerFailure?)!.errorCode ==
+            ServerErrorCode.noDate) {
+          errorMessage = 'no_data'.tr();
         } else if ((failure as ServerFailure?)!.message.isNotEmpty) {
           errorMessage = (failure as ServerFailure?)!.message;
         } else if ((failure as ServerFailure?)!.errorCode ==

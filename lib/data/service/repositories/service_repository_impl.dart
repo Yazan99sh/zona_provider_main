@@ -107,7 +107,7 @@ class ServiceRepositoryImpl extends BaseRepositoryImpl
 
   @override
   Future<Either<Failure, String>> updateService({
-    required String id,
+    required int id,
     String? name,
     String? description,
     double? price,

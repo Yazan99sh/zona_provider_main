@@ -4,7 +4,7 @@ part of 'update_service_bloc.dart';
 abstract class UpdateServiceEvent {}
 
 class UpdateServiceRequested extends UpdateServiceEvent {
-  final String id;
+  final int id;
   final String? name;
   final String? description;
   final double? price;

@@ -5,7 +5,8 @@ enum ServerErrorCode {
   forbidden,
   notFound,
   invalidData,
-  wrongInput
+  wrongInput,
+  noDate,
 }
 
 

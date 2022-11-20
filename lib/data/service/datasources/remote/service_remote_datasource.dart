@@ -38,7 +38,7 @@ abstract class ServiceRemoteDataSource {
   });
 
   Future<String> updateService({
-    required String id,
+    required int id,
     String? name,
     String? description,
     double? price,
@@ -70,7 +70,7 @@ abstract class ServiceRemoteDataSourceImpl implements ServiceRemoteDataSource {
   Future<BaseResponse<List<ServiceModel>>> getAllService();
 
   @override
-  @POST('api/auth/my_services')
+  @POST('/api/auth/my_services')
   Future<BaseResponse<List<ServiceModel>>> getMyServices();
 
   @override
@@ -103,7 +103,7 @@ abstract class ServiceRemoteDataSourceImpl implements ServiceRemoteDataSource {
   @override
   @PATCH('/api/auth/Update_Service_Bytoken')
   Future<String> updateService({
-    @Part(name: 'id') required String id,
+    @Part(name: 'id') required int id,
     @Part() String? name,
     @Part() String? description,
     @Part() double? price,

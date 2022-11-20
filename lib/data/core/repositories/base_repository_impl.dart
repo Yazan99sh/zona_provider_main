@@ -103,7 +103,7 @@ class BaseRepositoryImpl implements BaseRepository {
       case 403:
         return ServerErrorCode.forbidden;
       case 400:
-        return ServerErrorCode.invalidData;
+        return ServerErrorCode.noDate;
       case 422:
         return ServerErrorCode.wrongInput;
       default:

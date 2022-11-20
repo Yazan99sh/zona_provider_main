@@ -58,6 +58,15 @@ class _AppDrawerState extends State<AppDrawer> {
                   onTap: () {
                     _navigateRoute(const HomePageRoute(), context);
                   },
+                ),ListTile(
+                  leading: Icon(
+                    Icons.add,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                  title: const Text('add_service').tr(),
+                  onTap: () {
+                    _navigateRoute( AddEditServicePageRoute(), context);
+                  },
                 ),    ListTile(
                   leading: Icon(
                     Icons.logout,

@@ -46,7 +46,7 @@ class _ServiceRemoteDataSourceImpl implements ServiceRemoteDataSourceImpl {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<BaseResponse<List<ServiceModel>>>(
             Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, 'api/auth/my_services',
+                .compose(_dio.options, '/api/auth/my_services',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = BaseResponse<List<ServiceModel>>.fromJson(
@@ -204,7 +204,7 @@ class _ServiceRemoteDataSourceImpl implements ServiceRemoteDataSourceImpl {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = FormData();
-    _data.fields.add(MapEntry('id', id));
+    _data.fields.add(MapEntry('id', id.toString()));
     if (name != null) {
       _data.fields.add(MapEntry('name', name));
     }
