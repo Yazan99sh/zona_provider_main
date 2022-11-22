@@ -1,4 +1,4 @@
-package com.example.zona_provider_main;
+package ae.laravel.zona_provider_main;
 
 import io.flutter.embedding.android.FlutterActivity;
 
